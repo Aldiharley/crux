@@ -22,5 +22,5 @@ semgrep scan --config "p/csharp" --config "p/security-audit" \
 echo "Semgrep findings written to $OUT"
 echo
 echo "Now triage them with Crux:"
-echo "  python -m crux --input $OUT --mock                 # offline"
-echo "  python -m crux --input $OUT --model claude-opus-5-5 # Claude-assisted (needs ANTHROPIC_API_KEY)"
+echo "  crux --input $OUT --mock                 # offline"
+echo "  crux --input $OUT --model claude-opus-5-5 # Claude-assisted (needs ANTHROPIC_API_KEY)"

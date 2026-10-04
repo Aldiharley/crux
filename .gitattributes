@@ -1,0 +1,9 @@
+# Store text as LF in the repo regardless of contributor OS.
+* text=auto eol=lf
+
+# Shell scripts must stay LF to run on Linux/macOS.
+*.sh text eol=lf
+
+# Golden fixtures captured from the Python reference: LF on every platform
+# (the tests normalise line endings anyway, so goldens stay byte-stable).
+tests/fixtures/** text eol=lf

@@ -1,6 +1,33 @@
-__pycache__/
-*.pyc
-.venv/
-out/
-*.egg-info/
+# --- Rust ---------------------------------------------------------------
+# Build output. Cargo.lock IS committed: crux ships a binary.
 target/
+**/*.rs.bk
+
+# --- Python reference (crux-python/) -------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# --- Crux run output -----------------------------------------------------
+# Default --out / --audit / --emit-json location.
+out/
+
+# scripts/scan_webgoatnet.sh: the WebGoat.NET clone and its Semgrep report.
+_webgoatnet/
+semgrep_*.json
+
+# --- Secrets -------------------------------------------------------------
+# ANTHROPIC_API_KEY belongs in the environment, never in the repo.
+.env
+.env.*
+
+# --- Editors / OS --------------------------------------------------------
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+Thumbs.db
