@@ -10,6 +10,7 @@ pub mod error;
 pub mod ingest;
 pub mod models;
 pub mod pipeline;
+pub mod report;
 pub mod triager;
 
 pub use error::CruxError;
