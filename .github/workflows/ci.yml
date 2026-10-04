@@ -29,7 +29,11 @@ jobs:
           targets: x86_64-unknown-linux-musl
       - run: sudo apt-get update && sudo apt-get install -y musl-tools
       - run: cargo build --release --target x86_64-unknown-linux-musl
-      - run: file target/x86_64-unknown-linux-musl/release/crux | grep -q "statically linked"
+      # musl builds are static-pie by default; `file` reports either wording.
+      - name: binary is statically linked
+        run: |
+          file target/x86_64-unknown-linux-musl/release/crux
+          file target/x86_64-unknown-linux-musl/release/crux | grep -qE "static(ally|-pie) linked"
       - run: target/x86_64-unknown-linux-musl/release/crux --input samples/webgoatnet_findings.json --mock
 
   python-reference:
