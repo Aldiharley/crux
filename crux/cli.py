@@ -7,6 +7,7 @@ Examples:
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -27,6 +28,8 @@ def main(argv: list[str] | None = None) -> int:
                    help="confidence below this is downgraded to NEEDS HUMAN (default 0.55)")
     p.add_argument("--audit", default="out/audit.log.jsonl", help="hash-chained audit log path")
     p.add_argument("--out", default="out/triage_report.md", help="Markdown report path")
+    p.add_argument("--emit-json", default=None,
+                   help="write the ranked triaged queue as JSON to this path")
     args = p.parse_args(argv)
 
     try:
@@ -55,6 +58,29 @@ def main(argv: list[str] | None = None) -> int:
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(report, encoding="utf-8")
+
+    if args.emit_json:
+        queue = [
+            {
+                "finding": {
+                    "id": it.finding.id, "tool": it.finding.tool,
+                    "rule_id": it.finding.rule_id, "severity": it.finding.severity,
+                    "title": it.finding.title, "message": it.finding.message,
+                    "url": it.finding.url, "file": it.finding.file, "line": it.finding.line,
+                    "category": it.finding.category.value, "cwe": it.finding.cwe,
+                    "code": it.finding.code,
+                },
+                "verdict": it.result.verdict.value,
+                "confidence": it.result.confidence,
+                "fp_likelihood": it.result.fp_likelihood,
+                "rationale": it.result.rationale,
+                "remediation": it.result.remediation,
+            }
+            for it in items
+        ]
+        ej = Path(args.emit_json)
+        ej.parent.mkdir(parents=True, exist_ok=True)
+        ej.write_text(json.dumps(queue, indent=2), encoding="utf-8")
 
     s = summary(items)
     ok, msg = audit.verify()

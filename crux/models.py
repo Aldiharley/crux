@@ -21,6 +21,7 @@ class Verdict(str, Enum):
 class Category(str, Enum):
     SAST = "SAST"
     SCA = "SCA"
+    DAST = "DAST"
 
 
 @dataclass(frozen=True)
@@ -31,11 +32,16 @@ class Finding:
     severity: str              # INFO | LOW | MEDIUM | HIGH | CRITICAL
     title: str
     message: str
-    file: str
-    line: int
+    file: str = ""             # optional when url is present (DAST)
+    line: int = 0
     category: Category = Category.SAST
     code: str = ""             # the offending snippet, if the scanner gave one
     cwe: str = ""
+    url: str = ""              # DAST: the affected URL
+
+    def locus(self) -> str:
+        """Where the finding lives: the URL for DAST, else file:line."""
+        return self.url or f"{self.file}:{self.line}"
 
     def content_hash(self) -> str:
         """Stable hash of the finding, so the audit log can prove what was triaged."""
@@ -43,7 +49,7 @@ class Finding:
             {
                 "id": self.id, "tool": self.tool, "rule_id": self.rule_id,
                 "severity": self.severity, "file": self.file, "line": self.line,
-                "message": self.message, "code": self.code,
+                "message": self.message, "code": self.code, "url": self.url,
             },
             sort_keys=True, separators=(",", ":"),
         )
@@ -51,7 +57,9 @@ class Finding:
 
     @staticmethod
     def parse(raw: dict[str, Any]) -> "Finding":
-        required = ("id", "tool", "rule_id", "severity", "title", "message", "file", "line")
+        required = ("id", "tool", "rule_id", "severity", "title", "message")
+        if not raw.get("url"):
+            required = required + ("file", "line")
         missing = [k for k in required if k not in raw]
         if missing:
             raise ValueError(f"finding missing required fields: {missing}")
@@ -63,7 +71,8 @@ class Finding:
         return Finding(
             id=str(raw["id"]), tool=str(raw["tool"]), rule_id=str(raw["rule_id"]),
             severity=str(raw["severity"]).upper(), title=str(raw["title"]),
-            message=str(raw["message"]), file=str(raw["file"]), line=int(raw["line"]),
+            message=str(raw["message"]), file=str(raw.get("file", "")),
+            line=int(raw.get("line", 0)), url=str(raw.get("url", "")),
             category=category, code=str(raw.get("code", "")), cwe=str(raw.get("cwe", "")),
         )
 
