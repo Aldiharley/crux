@@ -3,6 +3,7 @@
 //! Findings in, a deduped, false-positive-cut, confidence-scored, abstain-gated,
 //! audited, ranked queue out. Crux never touches a target.
 
+pub mod anthropic;
 pub mod audit;
 pub mod canon;
 pub mod error;
