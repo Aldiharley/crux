@@ -30,6 +30,22 @@ pub fn sha256_hex(bytes: &[u8]) -> String {
     s
 }
 
+/// Compact, ASCII-only object with keys in the given order (for human-readable
+/// log lines; hashing always uses [`to_canonical_json`]).
+pub fn to_json_ordered(fields: &[(&str, &Value)]) -> String {
+    let mut out = String::from("{");
+    for (i, (k, v)) in fields.iter().enumerate() {
+        if i > 0 {
+            out.push(',');
+        }
+        write_str(&mut out, k);
+        out.push(':');
+        write_value(&mut out, v);
+    }
+    out.push('}');
+    out
+}
+
 fn write_value(out: &mut String, v: &Value) {
     match v {
         Value::Null => out.push_str("null"),
