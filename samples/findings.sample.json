@@ -1,0 +1,88 @@
+[
+  {
+    "id": "zap-1",
+    "tool": "zap",
+    "rule_id": "dast/sqli",
+    "severity": "HIGH",
+    "title": "SQL injection in login form",
+    "message": "Boolean-based blind SQL injection on parameter 'user'.",
+    "url": "https://lab.example/login",
+    "category": "DAST",
+    "cwe": "CWE-89",
+    "evidence": "user=admin' AND '1'='1 -> 200 (len 5120) vs user=admin' AND '1'='2 -> 200 (len 812)"
+  },
+  {
+    "id": "nuclei-7",
+    "tool": "nuclei",
+    "rule_id": "sqli-error-based",
+    "severity": "HIGH",
+    "title": "Error-based SQL injection",
+    "message": "Database error message reflected for a quote in 'user'.",
+    "url": "https://lab.example/login",
+    "category": "DAST",
+    "cwe": "CWE-89",
+    "evidence": "You have an error in your SQL syntax"
+  },
+  {
+    "id": "zap-2",
+    "tool": "zap",
+    "rule_id": "dast/xss-reflected",
+    "severity": "MEDIUM",
+    "title": "Reflected XSS in search",
+    "message": "Parameter 'q' is reflected unencoded into the HTML response.",
+    "url": "https://lab.example/search?q=",
+    "category": "DAST",
+    "cwe": "CWE-79",
+    "evidence": "<script>alert(1)</script> reflected in body"
+  },
+  {
+    "id": "zap-3",
+    "tool": "zap",
+    "rule_id": "dast/missing-header-x-content-type-options",
+    "severity": "INFO",
+    "title": "X-Content-Type-Options header missing",
+    "message": "The anti-MIME-sniffing header is not set.",
+    "url": "https://lab.example/static/app.js",
+    "category": "DAST",
+    "cwe": "CWE-693"
+  },
+  {
+    "id": "sg-1",
+    "tool": "semgrep",
+    "rule_id": "python.lang.security.audit.subprocess-shell-true.command-injection",
+    "severity": "HIGH",
+    "title": "subprocess call with shell=True and user input",
+    "message": "User input flows into a shell command.",
+    "file": "app/ops/backup.py",
+    "line": 41,
+    "category": "SAST",
+    "cwe": "CWE-78",
+    "code": "subprocess.run(f\"tar czf {name}.tgz data/\", shell=True)"
+  },
+  {
+    "id": "sg-2",
+    "tool": "semgrep",
+    "rule_id": "python.lang.security.audit.subprocess-shell-true.command-injection",
+    "severity": "HIGH",
+    "title": "subprocess call with shell=True in a test helper",
+    "message": "Shell command built from a string in a test.",
+    "file": "tests/helpers/fixtures.py",
+    "line": 12,
+    "category": "SAST",
+    "cwe": "CWE-78",
+    "code": "subprocess.run(\"rm -rf build\", shell=True)"
+  },
+  {
+    "id": "trivy-1",
+    "tool": "trivy",
+    "rule_id": "sca.jinja2.CVE-2024-56201",
+    "severity": "MEDIUM",
+    "title": "Vulnerable dependency: jinja2 (sandbox breakout)",
+    "message": "jinja2 3.1.4 is affected by CVE-2024-56201; fixed in 3.1.5.",
+    "file": "requirements.txt",
+    "line": 7,
+    "category": "SCA",
+    "cwe": "CWE-150",
+    "code": "jinja2==3.1.4"
+  }
+]

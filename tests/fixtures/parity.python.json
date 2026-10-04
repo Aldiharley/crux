@@ -1,0 +1,58 @@
+[
+  {
+    "id": "wg-001",
+    "verdict": "TRUE_POSITIVE",
+    "confidence": 1.0,
+    "fp_likelihood": 0.0,
+    "rationale": "Heuristic: a high-signal rule in application code with no strong false-positive indicator. Treat as real until proven otherwise.",
+    "content_hash": "f1c732608d9700b47049fccc27cdd12649ad16d65dff25365b58186cd799326b"
+  },
+  {
+    "id": "wg-002",
+    "verdict": "TRUE_POSITIVE",
+    "confidence": 1.0,
+    "fp_likelihood": 0.0,
+    "rationale": "Heuristic: a high-signal rule in application code with no strong false-positive indicator. Treat as real until proven otherwise.",
+    "content_hash": "bb3392f935e9c5884d456e6df715ee700098f99a29258706865910fef656720a"
+  },
+  {
+    "id": "n-ü1",
+    "verdict": "TRUE_POSITIVE",
+    "confidence": 1.0,
+    "fp_likelihood": 0.0,
+    "rationale": "Heuristic: a high-signal rule in application code with no strong false-positive indicator. Treat as real until proven otherwise.",
+    "content_hash": "d3c63141156bc0b1849629d01c0177ae0f595467dd36a595a72023a7689183c3"
+  },
+  {
+    "id": "wg-003",
+    "verdict": "TRUE_POSITIVE",
+    "confidence": 0.85,
+    "fp_likelihood": 0.1,
+    "rationale": "Heuristic: a high-signal rule in application code with no strong false-positive indicator. Treat as real until proven otherwise.",
+    "content_hash": "4538899e820deee8e42f897e1d50326c22730750605caf4e2d58be1bc3c3d0bc"
+  },
+  {
+    "id": "wg-006",
+    "verdict": "TRUE_POSITIVE",
+    "confidence": 0.85,
+    "fp_likelihood": 0.1,
+    "rationale": "Heuristic: a high-signal rule in application code with no strong false-positive indicator. Treat as real until proven otherwise.",
+    "content_hash": "1e6ff685d8c783e19637b2b08d8a41abb6f86c3958e64db613960d2aa1aed1e7"
+  },
+  {
+    "id": "wg-004",
+    "verdict": "ABSTAIN",
+    "confidence": 0.05,
+    "fp_likelihood": 0.5,
+    "rationale": "Confidence 0.05 below the 0.55 gate. Routed to a human. Original reasoning: Heuristic: mixed signals, no clear verdict. Triaged as real but with low confidence, so the gate will route it to a human.",
+    "content_hash": "744a3eec5dcefe2c58b7234ff4aabcdac97db67fff73deec89bc11b2da078078"
+  },
+  {
+    "id": "wg-005",
+    "verdict": "LIKELY_FALSE_POSITIVE",
+    "confidence": 0.65,
+    "fp_likelihood": 0.8,
+    "rationale": "Heuristic: fires in a low-risk path (test, vendor, generated) or is a low-severity rule, so it is more likely noise than an exploitable issue.",
+    "content_hash": "73e932b3def045a3cbe1bc462b5f543453c8585e12f8881b35dde962ce50f39e"
+  }
+]

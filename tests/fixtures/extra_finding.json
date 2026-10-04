@@ -1,0 +1,1 @@
+[{"id": "n-ü1", "tool": "nuclei", "rule_id": "dast/sqli", "severity": "HIGH", "title": "SQLi café", "message": "m — ü", "url": "https://a/login?q=é", "category": "DAST", "code": "x\n\t\"y\""}]
