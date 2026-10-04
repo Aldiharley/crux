@@ -4,6 +4,8 @@
 
 use std::collections::HashMap;
 
+use serde::ser::{Serialize, SerializeStruct, Serializer};
+
 use crate::audit::AuditLog;
 use crate::error::CruxError;
 use crate::models::{Finding, TriageResult, Verdict};
@@ -19,6 +21,23 @@ pub struct Item {
     pub result: TriageResult,
     /// Ids of other findings with the same CWE and locus that were merged into this one.
     pub duplicates: Vec<String>,
+}
+
+/// The `--emit-json` queue entry shape:
+/// `{finding, verdict, confidence, fp_likelihood, rationale, remediation, triager, duplicates}`.
+impl Serialize for Item {
+    fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        let mut m = s.serialize_struct("Item", 8)?;
+        m.serialize_field("finding", &self.finding)?;
+        m.serialize_field("verdict", &self.result.verdict)?;
+        m.serialize_field("confidence", &self.result.confidence)?;
+        m.serialize_field("fp_likelihood", &self.result.fp_likelihood)?;
+        m.serialize_field("rationale", &self.result.rationale)?;
+        m.serialize_field("remediation", &self.result.remediation)?;
+        m.serialize_field("triager", &self.result.triager)?;
+        m.serialize_field("duplicates", &self.duplicates)?;
+        m.end()
+    }
 }
 
 /// Triage `findings` and return the ranked queue.

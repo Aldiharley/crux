@@ -19,10 +19,16 @@ pipeline such as Ascent, and makes the scanner's output trustworthy.
 ## Build
 
 ```bash
-cargo build --release          # target/release/crux
+cargo build --release                                     # target/release/crux(.exe)
+cargo build --release --target x86_64-unknown-linux-musl  # fully static Linux binary
 ```
 
-Apache-2.0. TLS is rustls (no OpenSSL), so the binary has no system TLS dependency.
+Apache-2.0, no copyleft dependencies. TLS is rustls (no OpenSSL) and the Windows
+build links the C runtime statically (`.cargo/config.toml`), so `crux` ships as a
+single self-contained binary.
+
+Exit codes: `0` ok, `1` no findings in input, `2` input/config/IO error,
+`3` the audit chain failed verification after the run.
 
 ## CLI
 
@@ -39,7 +45,10 @@ crux --input samples/webgoatnet_findings.json --mock --emit-json out/queue.json
 - `--model <id>` uses Claude via the Anthropic Messages API (needs `ANTHROPIC_API_KEY`).
   Default `claude-opus-5-5`; `claude-haiku-4-5` is far cheaper for high volume.
 - `--emit-json` writes the ranked queue:
-  `[{finding, verdict, confidence, fp_likelihood, rationale, remediation, duplicates}]`.
+  `[{finding, verdict, confidence, fp_likelihood, rationale, remediation, triager, duplicates}]`,
+  ranked. Findings sharing a CWE (or, without one, a rule id) and a locus are merged
+  into the highest-confidence one; the others are listed in `duplicates`, never dropped
+  silently, and every input finding is still audited.
 
 Input may be a JSON list of findings, `{"findings": [...]}`, Semgrep `--json`
 output, or SARIF 2.1.0.
@@ -71,4 +80,5 @@ Logs written by the Python reference verify under Rust and vice versa.
 
 `crux-python/` holds the original Python prototype. It is the behavioural reference:
 the Rust `MockTriager` reproduces its verdicts and calibrated confidences, checked
-by `tests/parity.rs` against goldens captured from it.
+by `tests/parity.rs` against goldens captured from it (verdicts, confidences, ranking,
+rationale text, content hashes, and the markdown report byte for byte).

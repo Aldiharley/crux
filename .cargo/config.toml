@@ -1,0 +1,4 @@
+# Statically link the C runtime on Windows MSVC so `crux.exe` is a single self-contained
+# binary. On Linux, build for x86_64-unknown-linux-musl for a fully static binary.
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
