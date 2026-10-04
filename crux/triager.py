@@ -120,7 +120,7 @@ class AnthropicTriager:
         prompt = (
             f"Finding id: {finding.id}\n"
             f"Scanner: {finding.tool}   Rule: {finding.rule_id}   Severity: {finding.severity}\n"
-            f"CWE: {finding.cwe or 'n/a'}   Location: {finding.file}:{finding.line}\n"
+            f"CWE: {finding.cwe or 'n/a'}   Location: {finding.locus()}\n"
             f"Title: {finding.title}\n"
             f"Message: {finding.message}\n"
             f"Code:\n{finding.code or '(no snippet provided)'}\n\n"
