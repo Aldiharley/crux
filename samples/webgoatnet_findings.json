@@ -1,0 +1,80 @@
+[
+  {
+    "id": "wg-001",
+    "tool": "semgrep",
+    "rule_id": "csharp.lang.security.sqli.raw-sql-concat",
+    "severity": "HIGH",
+    "title": "SQL query built by string concatenation with user input",
+    "message": "User-controlled 'customerId' is concatenated directly into a SQL command.",
+    "file": "WebGoat/App_Code/DB/CustomerDAL.cs",
+    "line": 64,
+    "category": "SAST",
+    "cwe": "CWE-89",
+    "code": "string sql = \"SELECT * FROM Customers WHERE Id = '\" + Request[\"customerId\"] + \"'\";\nvar cmd = new SqlCommand(sql, conn);"
+  },
+  {
+    "id": "wg-002",
+    "tool": "semgrep",
+    "rule_id": "csharp.lang.security.xss.raw-response-write",
+    "severity": "HIGH",
+    "title": "Reflected XSS via Response.Write of unencoded input",
+    "message": "Request parameter 'q' is written to the response without encoding.",
+    "file": "WebGoat/Content/Search.aspx.cs",
+    "line": 37,
+    "category": "SAST",
+    "cwe": "CWE-79",
+    "code": "Response.Write(\"You searched for: \" + Request.QueryString[\"q\"]);"
+  },
+  {
+    "id": "wg-003",
+    "tool": "semgrep",
+    "rule_id": "csharp.lang.security.crypto.weak-hash-md5",
+    "severity": "MEDIUM",
+    "title": "Weak hashing algorithm (MD5) used for passwords",
+    "message": "MD5 is used to hash credentials; it is not collision-resistant.",
+    "file": "WebGoat/App_Code/Auth/PasswordHasher.cs",
+    "line": 21,
+    "category": "SAST",
+    "cwe": "CWE-327",
+    "code": "using (var md5 = MD5.Create()) { return Convert.ToBase64String(md5.ComputeHash(bytes)); }"
+  },
+  {
+    "id": "wg-004",
+    "tool": "semgrep",
+    "rule_id": "csharp.lang.security.sqli.raw-sql-concat",
+    "severity": "HIGH",
+    "title": "SQL built by concatenation in a test fixture",
+    "message": "Raw SQL concatenation detected inside a unit-test helper.",
+    "file": "WebGoat.Tests/Fixtures/SeedData.cs",
+    "line": 112,
+    "category": "SAST",
+    "cwe": "CWE-89",
+    "code": "var sql = \"INSERT INTO Customers (Name) VALUES ('\" + name + \"')\"; // test seed"
+  },
+  {
+    "id": "wg-005",
+    "tool": "semgrep",
+    "rule_id": "generic.secrets.detected-generic-api-key",
+    "severity": "INFO",
+    "title": "Possible API key in sample config",
+    "message": "A high-entropy string that looks like an API key was found.",
+    "file": "WebGoat/vendor/examples/appsettings.sample.json",
+    "line": 9,
+    "category": "SAST",
+    "cwe": "CWE-798",
+    "code": "\"ApiKey\": \"EXAMPLE_PLACEHOLDER_DO_NOT_USE_0000\""
+  },
+  {
+    "id": "wg-006",
+    "tool": "trivy",
+    "rule_id": "sca.Newtonsoft.Json.CVE-2024-21907",
+    "severity": "MEDIUM",
+    "title": "Vulnerable dependency: Newtonsoft.Json (deserialization DoS)",
+    "message": "Newtonsoft.Json 12.0.1 is affected by CVE-2024-21907; fixed in 13.0.1.",
+    "file": "WebGoat/packages.config",
+    "line": 5,
+    "category": "SCA",
+    "cwe": "CWE-502",
+    "code": "<package id=\"Newtonsoft.Json\" version=\"12.0.1\" targetFramework=\"net48\" />"
+  }
+]
