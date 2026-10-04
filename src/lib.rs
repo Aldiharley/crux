@@ -7,6 +7,7 @@ pub mod canon;
 pub mod error;
 pub mod ingest;
 pub mod models;
+pub mod triager;
 
 pub use error::CruxError;
 pub use models::{Category, Finding, TriageResult, Verdict};
