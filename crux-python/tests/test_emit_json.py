@@ -1,6 +1,7 @@
 import json
 import subprocess
 import sys
+from pathlib import Path
 
 
 def test_emit_json(tmp_path):
@@ -12,7 +13,7 @@ def test_emit_json(tmp_path):
     subprocess.run([sys.executable, "-m", "crux", "--input", str(inp), "--mock",
                     "--emit-json", str(out), "--audit", str(tmp_path / "a.jsonl"),
                     "--out", str(tmp_path / "r.md")],
-                   check=True, cwd="M:/Projects/crux")
+                   check=True, cwd=str(Path(__file__).resolve().parents[1]))
     items = json.loads(out.read_text())
     assert items and "verdict" in items[0] and "finding" in items[0]
     assert items[0]["finding"]["url"] == "https://a/x"
