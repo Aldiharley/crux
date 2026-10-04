@@ -5,6 +5,7 @@
 
 pub mod canon;
 pub mod error;
+pub mod ingest;
 pub mod models;
 
 pub use error::CruxError;
